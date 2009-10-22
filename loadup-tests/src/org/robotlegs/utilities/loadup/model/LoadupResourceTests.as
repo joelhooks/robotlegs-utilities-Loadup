@@ -6,9 +6,9 @@ package org.robotlegs.utilities.loadup.model
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
 	import org.robotlegs.utilities.loadup.events.ResourceEvent;
-	import org.robotlegs.utilities.loadup.intefaces.ILoadupResource;
-	import org.robotlegs.utilities.loadup.intefaces.ILoadupResourceFactory;
-	import org.robotlegs.utilities.loadup.intefaces.IResource;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupResourceFactory;
+	import org.robotlegs.utilities.loadup.interfaces.IResource;
 	import org.robotlegs.utilities.loadup.support.TestResourceFailsImmediatly;
 	import org.robotlegs.utilities.loadup.support.TestResourceLoadsImmediatly;
 	import org.robotlegs.utilities.loadup.support.TestResourceNeverLoads;

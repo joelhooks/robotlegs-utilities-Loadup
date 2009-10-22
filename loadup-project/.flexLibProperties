@@ -20,14 +20,9 @@
     <classEntry path="org.robotlegs.utilities.loadup.assetLoader.model.AssetTypeMap"/>
     <classEntry path="org.robotlegs.utilities.loadup.events.LoadupResourceEvent"/>
     <classEntry path="org.robotlegs.utilities.loadup.events.LoadupMonitorEvent"/>
-    <classEntry path="org.robotlegs.utilities.loadup.intefaces.ILoadupResource"/>
     <classEntry path="org.robotlegs.utilities.loadup.model.LoadupResourceFactory"/>
-    <classEntry path="org.robotlegs.utilities.loadup.intefaces.ILoadupResourceFactory"/>
-    <classEntry path="org.robotlegs.utilities.loadup.intefaces.ILoadupMonitor"/>
     <classEntry path="org.robotlegs.utilities.loadup.events.ResourceEvent"/>
     <classEntry path="org.robotlegs.utilities.loadup.model.LoadupResourceStatus"/>
-    <classEntry path="org.robotlegs.utilities.loadup.intefaces.IRetryPolicy"/>
-    <classEntry path="org.robotlegs.utilities.loadup.intefaces.IRetryParameters"/>
     <classEntry path="org.robotlegs.utilities.loadup.model.RetryParameters"/>
   </includeClasses>
   <includeResources/>

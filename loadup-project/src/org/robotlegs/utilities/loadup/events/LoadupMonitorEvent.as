@@ -2,8 +2,8 @@ package org.robotlegs.utilities.loadup.events
 {
 	import flash.events.Event;
 	
-	import org.robotlegs.utilities.loadup.intefaces.ILoadupMonitor;
-	import org.robotlegs.utilities.loadup.intefaces.ILoadupResource;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupMonitor;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
 	
 	public class LoadupMonitorEvent extends Event
 	{

@@ -6,9 +6,9 @@ package org.robotlegs.utilities.loadup.model
 	import org.robotlegs.utilities.loadup.events.LoadupMonitorEvent;
 	import org.robotlegs.utilities.loadup.events.LoadupResourceEvent;
 	import org.robotlegs.utilities.loadup.events.ResourceEvent;
-	import org.robotlegs.utilities.loadup.intefaces.ILoadupResource;
-	import org.robotlegs.utilities.loadup.intefaces.IResource;
-	import org.robotlegs.utilities.loadup.intefaces.IRetryPolicy;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.interfaces.IRetryPolicy;
 	
 	/**
 	 * Decorator for <code>IResource</code>

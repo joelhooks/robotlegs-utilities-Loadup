@@ -4,11 +4,11 @@ package org.robotlegs.utilities.loadup.model
 	
 	import org.robotlegs.utilities.loadup.events.LoadupMonitorEvent;
 	import org.robotlegs.utilities.loadup.events.LoadupResourceEvent;
-	import org.robotlegs.utilities.loadup.intefaces.ILoadupResource;
-	import org.robotlegs.utilities.loadup.intefaces.IResource;
-	import org.robotlegs.utilities.loadup.intefaces.IResourceList;
-	import org.robotlegs.utilities.loadup.intefaces.IRetryPolicy;
-	import org.robotlegs.utilities.loadup.intefaces.ILoadupMonitor;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResourceList;
+	import org.robotlegs.utilities.loadup.interfaces.IRetryPolicy;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupMonitor;
 
 	public class LoadupMonitor implements ILoadupMonitor
 	{

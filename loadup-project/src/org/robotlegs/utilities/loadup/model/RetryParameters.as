@@ -1,6 +1,6 @@
 package org.robotlegs.utilities.loadup.model
 {
-	import org.robotlegs.utilities.loadup.intefaces.IRetryParameters;
+	import org.robotlegs.utilities.loadup.interfaces.IRetryParameters;
 	
 	public class RetryParameters implements IRetryParameters
 	{

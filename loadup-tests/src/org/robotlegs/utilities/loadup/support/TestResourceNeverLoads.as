@@ -3,7 +3,7 @@ package org.robotlegs.utilities.loadup.support
 	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.utilities.loadup.events.ResourceEvent;
-	import org.robotlegs.utilities.loadup.intefaces.IResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResource;
 	
 	public class TestResourceNeverLoads implements IResource
 	{

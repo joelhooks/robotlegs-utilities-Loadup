@@ -4,9 +4,9 @@ package org.robotlegs.utilities.loadup.model
 	import flash.events.IEventDispatcher;
 	
 	import org.flexunit.Assert;
-	import org.robotlegs.utilities.loadup.intefaces.ILoadupResource;
-	import org.robotlegs.utilities.loadup.intefaces.IResource;
-	import org.robotlegs.utilities.loadup.intefaces.IResourceList;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResourceList;
 	import org.robotlegs.utilities.loadup.support.TestResourceLoadsImmediatly;
 	import org.robotlegs.utilities.loadup.support.TestResourceNeverLoads;
 

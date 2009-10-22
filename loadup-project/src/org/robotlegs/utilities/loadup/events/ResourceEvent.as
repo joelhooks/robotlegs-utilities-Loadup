@@ -2,7 +2,7 @@ package org.robotlegs.utilities.loadup.events
 {
 	import flash.events.Event;
 	
-	import org.robotlegs.utilities.loadup.intefaces.IResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResource;
 	
 	public class ResourceEvent extends Event
 	{

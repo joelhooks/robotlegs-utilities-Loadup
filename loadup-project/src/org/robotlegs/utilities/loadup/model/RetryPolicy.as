@@ -1,7 +1,7 @@
 package org.robotlegs.utilities.loadup.model
 {
-	import org.robotlegs.utilities.loadup.intefaces.IRetryParameters;
-	import org.robotlegs.utilities.loadup.intefaces.IRetryPolicy;
+	import org.robotlegs.utilities.loadup.interfaces.IRetryParameters;
+	import org.robotlegs.utilities.loadup.interfaces.IRetryPolicy;
 
 	public class RetryPolicy implements IRetryPolicy
 	{
