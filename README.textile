@@ -1,6 +1,6 @@
 Not much in the way of docs yet, but:
 
-.h3 At the simplest:
+h3. At the simplest:
 
 <pre>var monitor:ILoadupMonitor = new LoadupMonitor(eventDispatcher);
 //*Resource implement IResource, which carries a load() method
@@ -9,7 +9,7 @@ Not much in the way of docs yet, but:
 monitor.addResourceArray( [oneResource, twoResource, threeResource, fourResource] );
 monitor.startResourceLoading();</pre>
 
-.h3 A llittel more complex...
+h3. A llittel more complex...
 
 <pre>var monitor:ILoadupMonitor = new LoadupMonitor(eventDispatcher);
 //adding the resources individually gives you access to the ILoadupResource
