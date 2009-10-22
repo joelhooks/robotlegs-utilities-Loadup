@@ -1,0 +1,28 @@
+Not much in the way of docs yet, but:
+
+.h3 At the simplest:
+
+<pre>var monitor:ILoadupMonitor = new LoadupMonitor(eventDispatcher);
+//*Resource implement IResource, which carries a load() method
+//in the context of Robotlegs this would take place in a command 
+//and these resources would be injected services
+monitor.addResourceArray( [oneResource, twoResource, threeResource, fourResource] );
+monitor.startResourceLoading();</pre>
+
+.h3 A llittel more complex...
+
+<pre>var monitor:ILoadupMonitor = new LoadupMonitor(eventDispatcher);
+//adding the resources individually gives you access to the ILoadupResource
+//objects. With these you can set loading order requirements and individual
+//retry policies.
+var oneLoadResource:ILoadupResource = monitor.addResource(myService);
+var twoLoadResource:ILoadupResource = monitor.addResource(myOtherService);
+var threeLoadResource:ILoadupResource = monitor.addResource(myCoolService);
+var fourLoadResource:ILoadupResource = monitor.addResource(myFinalService);
+
+fourLoadResource.required = [threeLoadResource, twoLoadResource];
+oneLoadResource.required = [fourLoadResource];
+
+monitor.startResourceLoading();</pre>
+
+There is also some RetryPolicy action that I haven't documented yet. Soon...
