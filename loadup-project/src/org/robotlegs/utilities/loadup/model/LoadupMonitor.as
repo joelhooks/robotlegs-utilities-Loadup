@@ -4,19 +4,21 @@ package org.robotlegs.utilities.loadup.model
 	
 	import org.robotlegs.utilities.loadup.events.LoadupMonitorEvent;
 	import org.robotlegs.utilities.loadup.events.LoadupResourceEvent;
+	import org.robotlegs.utilities.loadup.interfaces.ILoadupMonitor;
 	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
 	import org.robotlegs.utilities.loadup.interfaces.IResourceList;
 	import org.robotlegs.utilities.loadup.interfaces.IRetryPolicy;
-	import org.robotlegs.utilities.loadup.interfaces.ILoadupMonitor;
 
 	public class LoadupMonitor implements ILoadupMonitor
 	{
 		protected var eventDispatcher:IEventDispatcher;
 		
-		private var _resourceList:IResourceList;
-		private var _retryPolicy:IRetryPolicy;
+		protected var _resourceList:IResourceList;
+		protected var _defaultRetryPolicy:IRetryPolicy;
 		
+		protected var loadedResources:Array;
+		protected var failedResourced:Array;
 		/**
 		 * Constructor
 		 * 
@@ -28,18 +30,21 @@ package org.robotlegs.utilities.loadup.model
 		{
 			this.eventDispatcher = eventDispatcher;
 			_resourceList = new ResourceList(eventDispatcher);
-			_retryPolicy = new RetryPolicy( new RetryParameters(0,0,300));
+			defaultRetryPolicy = new RetryPolicy(eventDispatcher);
+			loadedResources = [];
+			failedResourced = [];
 			addEventListeners();
 		}
 		
-		public function get retryPolicy():IRetryPolicy
+		public function get defaultRetryPolicy():IRetryPolicy
 		{
-			return _retryPolicy;
+			return _defaultRetryPolicy;
 		}
 
-		public function set retryPolicy(value:IRetryPolicy):void
+		public function set defaultRetryPolicy(value:IRetryPolicy):void
 		{
-			_retryPolicy = value;
+			_defaultRetryPolicy = value;
+			_resourceList.defaultRetryPolicy = value;
 		}
 
 		public function get resourceList():IResourceList
@@ -89,15 +94,49 @@ package org.robotlegs.utilities.loadup.model
 		
 		public function startResourceLoading():void
 		{
+			eventDispatcher.dispatchEvent(new LoadupMonitorEvent(LoadupMonitorEvent.LOADING_STARTED, this));
+			
 			for each(var resource:ILoadupResource in resourceList.resources)
 			{
 				resource.startLoad();
 			}
 		}
+		
+		public function get allResourcesAreLoaded():Boolean
+		{
+			return _resourceList.loadedResourceCount == _resourceList.count
+		}
+
+		public function get loadingIsFinished():Boolean 
+		{
+			
+			for each(var resource:ILoadupResource in _resourceList.resources)
+			{
+				var finishedLoading:Boolean = resource.status == LoadupResourceStatus.FAILED;
+				finishedLoading = finishedLoading || resource.status == LoadupResourceStatus.TIMED_OUT;
+				finishedLoading = finishedLoading || resource.status == LoadupResourceStatus.LOADED;
+				
+				if(!finishedLoading)
+					return false;
+			}
+			
+			return true;
+		}
+		
+		protected function checkLoadingStatus():void
+		{
+			if(allResourcesAreLoaded)
+				eventDispatcher.dispatchEvent( new LoadupMonitorEvent( LoadupMonitorEvent.LOADING_COMPLETE, this ) );
+
+			if(loadingIsFinished && !allResourcesAreLoaded)
+				eventDispatcher.dispatchEvent( new LoadupMonitorEvent(LoadupMonitorEvent.LOADING_FINISHED_INCOMPLETE, this, null, failedResourced) );
+		}
 
 		protected function addEventListeners():void
 		{
 			eventDispatcher.addEventListener( LoadupResourceEvent.LOADUP_RESOURCE_LOADED, handleResourceLoaded );
+			eventDispatcher.addEventListener( LoadupResourceEvent.LOADUP_RESOURCE_FAILED, handleResourceFailed );
+			eventDispatcher.addEventListener( LoadupResourceEvent.LOADUP_RESOURCE_TIMED_OUT, handleResourceFailed );
 		}
 		
 		protected function removeEventListeners():void
@@ -105,12 +144,18 @@ package org.robotlegs.utilities.loadup.model
 			eventDispatcher.removeEventListener( LoadupResourceEvent.LOADUP_RESOURCE_LOADED, handleResourceLoaded );
 		}
 		
+		protected function handleResourceFailed(event:LoadupResourceEvent):void
+		{
+			failedResourced.push(event.resource);
+			checkLoadingStatus();
+
+		}
+		
 		protected function handleResourceLoaded(event:LoadupResourceEvent):void
 		{
-			if(_resourceList.loadedResourceCount == _resourceList.count)
-				eventDispatcher.dispatchEvent( new LoadupMonitorEvent( LoadupMonitorEvent.LOADING_COMPLETE, this ) );
-			else
-				eventDispatcher.dispatchEvent( new LoadupMonitorEvent( LoadupMonitorEvent.LOADING_PROGRESS, this, event.resource, _resourceList.percentLoaded ) );
+			loadedResources.push( event.resource );
+			checkLoadingStatus();
+			eventDispatcher.dispatchEvent(new LoadupMonitorEvent(LoadupMonitorEvent.LOADING_PROGRESS, this, event.resource, _resourceList.percentLoaded));
 		}
 		
 	}

@@ -5,6 +5,11 @@ package org.robotlegs.utilities.loadup.interfaces
 		function get status():int;
 		function get resource():IResource;
 		function set required(value:Array):void;
+		function get loadStartTimeMilliseconds():Number;
+			
 		function startLoad():void;
+		
+		function get retryPolicy():IRetryPolicy;
+		function set retryPolicy(value:IRetryPolicy):void;
 	}
 }

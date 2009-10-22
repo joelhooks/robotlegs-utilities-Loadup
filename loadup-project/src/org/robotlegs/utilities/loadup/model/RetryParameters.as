@@ -6,14 +6,14 @@ package org.robotlegs.utilities.loadup.model
 	{
 		protected var _maxRetries:int;
 		protected var _retryInterval:Number;
-		protected var _timeout:Number;
+		protected var _timeoutInSeconds:Number;
 		protected var _exponentialBackoff:Boolean;
 		
-		public function RetryParameters( maxRetries:int = 0, retryInterval:Number = 0, timeout:Number = 0, exponentialBackoff:Boolean 	= false )
+		public function RetryParameters( maxRetries:int = 0, retryInterval:Number = 0, timeoutInSeconds:Number = 0, exponentialBackoff:Boolean 	= false )
 		{
 			_maxRetries = maxRetries >= 0 ? maxRetries : 0;
-			_retryInterval = retryInterval >= 0 ? retryInterval : 0;
-			_timeout = timeout >= 0 ? timeout : 0;
+			_retryInterval = retryInterval >= 0.0 ? retryInterval : 0.0;
+			_timeoutInSeconds = timeoutInSeconds >= 0.0 ? timeoutInSeconds : 0.0;
 			_exponentialBackoff = exponentialBackoff;
 		}
 
@@ -22,9 +22,9 @@ package org.robotlegs.utilities.loadup.model
 			return _exponentialBackoff;
 		}
 
-		public function get timeout():Number
+		public function get timeoutInSeconds():Number
 		{
-			return _timeout;
+			return _timeoutInSeconds;
 		}
 
 		public function get retryInterval():Number

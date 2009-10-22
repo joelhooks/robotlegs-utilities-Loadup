@@ -2,8 +2,8 @@ package org.robotlegs.utilities.loadup.interfaces
 {
 	public interface ILoadupMonitor
 	{
-		function get retryPolicy():IRetryPolicy;
-		function set retryPolicy(value:IRetryPolicy):void;
+		function get defaultRetryPolicy():IRetryPolicy;
+		function set defaultRetryPolicy(value:IRetryPolicy):void;
 		
 		function get resourceList():IResourceList;
 		function set resourceList(value:IResourceList):void;
@@ -12,5 +12,8 @@ package org.robotlegs.utilities.loadup.interfaces
 		
 		function addResource(resource:IResource):ILoadupResource;
 		function addResourceArray(resourceArray:Array):void;
+		
+		function get loadingIsFinished():Boolean;
+		function get allResourcesAreLoaded():Boolean;
 	}
 }

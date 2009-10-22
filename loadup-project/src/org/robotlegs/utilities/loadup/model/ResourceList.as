@@ -6,12 +6,13 @@ package org.robotlegs.utilities.loadup.model
 	import org.robotlegs.utilities.loadup.interfaces.ILoadupResourceFactory;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
 	import org.robotlegs.utilities.loadup.interfaces.IResourceList;
+	import org.robotlegs.utilities.loadup.interfaces.IRetryPolicy;
 	
 	public class ResourceList implements IResourceList
 	{
-		private var _resources:Array;
-		private var _resourceFactory:ILoadupResourceFactory;
-		
+		protected var _resources:Array;
+		protected var _resourceFactory:ILoadupResourceFactory;
+		protected var _defaultRetryPolicy:IRetryPolicy;
 		protected var eventDispatcher:IEventDispatcher;
 		
 		protected var canAddResources:Boolean;
@@ -31,6 +32,18 @@ package org.robotlegs.utilities.loadup.model
 		 * @return 
 		 * 
 		 */		
+
+		public function get defaultRetryPolicy():IRetryPolicy
+		{
+			return _defaultRetryPolicy;
+		}
+
+		public function set defaultRetryPolicy(value:IRetryPolicy):void
+		{
+			_defaultRetryPolicy = value;
+			_resourceFactory.defaultRetryPolicy = value;
+		}
+
 		public function get resources():Array
 		{
 			return _resources.concat();
