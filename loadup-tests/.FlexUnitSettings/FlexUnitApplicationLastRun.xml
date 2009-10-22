@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="" >
+<testsuite  name="Default Test Suite" project="robotlegs-utilities-LoadupTests">
+<testsuite name="org.robotlegs.utilities.loadup.suites:LoadupUtilityTestSuite" type="testsuiteclass"/>
+<testsuite name="org.robotlegs.utilities.loadup.model:LoadupMonitorTests" type="testcaseclass"/>
+</testsuite>
+</testrun>

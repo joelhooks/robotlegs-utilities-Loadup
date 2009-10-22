@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" version="3">
+  <includeClasses>
+    <classEntry path="org.robotlegs.utilities.loadup.model.LoadupMonitor"/>
+    <classEntry path="org.robotlegs.utilities.loadup.model.LoadupResource"/>
+    <classEntry path="org.robotlegs.utilities.loadup.intefaces.IResource"/>
+    <classEntry path="org.robotlegs.utilities.loadup.intefaces.IResourceList"/>
+    <classEntry path="org.robotlegs.utilities.loadup.model.ResourceList"/>
+    <classEntry path="org.robotlegs.utilities.loadup.model.RetryPolicy"/>
+    <classEntry path="org.robotlegs.utilities.loadup.controller.LoadupResourceCommandBase"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.interfaces.IAssetFactory"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.interfaces.IAssetForFlex"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.interfaces.IAssetLoader"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.interfaces.IAssetLoaderFactory"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.interfaces.IAssetTypeMap"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.model.AssetFactory"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.model.AssetGroupModel"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.model.AssetLoaderFactory"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.model.AssetModel"/>
+    <classEntry path="org.robotlegs.utilities.loadup.assetLoader.model.AssetTypeMap"/>
+    <classEntry path="org.robotlegs.utilities.loadup.events.LoadupResourceEvent"/>
+    <classEntry path="org.robotlegs.utilities.loadup.events.LoadupMonitorEvent"/>
+    <classEntry path="org.robotlegs.utilities.loadup.intefaces.ILoadupResource"/>
+    <classEntry path="org.robotlegs.utilities.loadup.model.LoadupResourceFactory"/>
+    <classEntry path="org.robotlegs.utilities.loadup.intefaces.ILoadupResourceFactory"/>
+    <classEntry path="org.robotlegs.utilities.loadup.intefaces.ILoadupMonitor"/>
+    <classEntry path="org.robotlegs.utilities.loadup.events.ResourceEvent"/>
+    <classEntry path="org.robotlegs.utilities.loadup.model.LoadupResourceStatus"/>
+    <classEntry path="org.robotlegs.utilities.loadup.intefaces.IRetryPolicy"/>
+    <classEntry path="org.robotlegs.utilities.loadup.intefaces.IRetryParameters"/>
+    <classEntry path="org.robotlegs.utilities.loadup.model.RetryParameters"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>
