@@ -9,7 +9,7 @@ h3. At the simplest:
 monitor.addResourceArray( [oneResource, twoResource, threeResource, fourResource] );
 monitor.startResourceLoading();</pre>
 
-h3. A llittel more complex...
+h3. A little more complex...
 
 <pre>var monitor:ILoadupMonitor = new LoadupMonitor(eventDispatcher);
 //adding the resources individually gives you access to the ILoadupResource
