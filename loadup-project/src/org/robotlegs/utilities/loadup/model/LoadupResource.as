@@ -71,6 +71,11 @@ package org.robotlegs.utilities.loadup.model
 			return _resource;
 		}
 		
+		public function get canLoad():Boolean
+		{
+ 			return status == LoadupResourceStatus.INITIALIZED && requiredResourcesLoaded;
+		}
+		
 		protected function get requiredResourcesLoaded():Boolean
 		{
 			for each(var resource:ILoadupResource in _required)

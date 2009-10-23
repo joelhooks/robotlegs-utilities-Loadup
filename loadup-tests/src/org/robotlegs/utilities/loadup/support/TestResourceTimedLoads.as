@@ -27,6 +27,7 @@ package org.robotlegs.utilities.loadup.support
 		
 		protected function handleTimer(event:Event):void
 		{
+			timer.stop();
 			eventDispatcher.dispatchEvent(new ResourceEvent(ResourceEvent.RESOURCE_LOADED, this));
 		}
 	}

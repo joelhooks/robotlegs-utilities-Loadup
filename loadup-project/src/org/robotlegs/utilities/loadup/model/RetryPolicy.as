@@ -35,7 +35,7 @@ package org.robotlegs.utilities.loadup.model
 			loadingIsActive = false;
 			_totalFailureTimeInSeconds = 0;
 			timedOut = false;
-			_retryParameters = new RetryParameters(0,0,2);
+			_retryParameters = new RetryParameters();
 			timedOut = false;
 			_failedLoadCount = 0;
 		}

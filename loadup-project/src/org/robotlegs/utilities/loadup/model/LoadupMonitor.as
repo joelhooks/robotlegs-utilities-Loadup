@@ -96,10 +96,7 @@ package org.robotlegs.utilities.loadup.model
 		{
 			eventDispatcher.dispatchEvent(new LoadupMonitorEvent(LoadupMonitorEvent.LOADING_STARTED, this));
 			
-			for each(var resource:ILoadupResource in resourceList.resources)
-			{
-				resource.startLoad();
-			}
+			loadAllResources();
 		}
 		
 		public function get allResourcesAreLoaded():Boolean
@@ -123,10 +120,21 @@ package org.robotlegs.utilities.loadup.model
 			return true;
 		}
 		
+		protected function loadAllResources():void
+		{
+			for each(var resource:ILoadupResource in resourceList.resources)
+			{
+				if(resource.canLoad)
+					resource.startLoad();
+			}			
+		}
+		
 		protected function checkLoadingStatus():void
 		{
 			if(allResourcesAreLoaded)
 				eventDispatcher.dispatchEvent( new LoadupMonitorEvent( LoadupMonitorEvent.LOADING_COMPLETE, this ) );
+			else
+				loadAllResources();
 
 			if(loadingIsFinished && !allResourcesAreLoaded)
 				eventDispatcher.dispatchEvent( new LoadupMonitorEvent(LoadupMonitorEvent.LOADING_FINISHED_INCOMPLETE, this, null, failedResourced) );
@@ -148,7 +156,6 @@ package org.robotlegs.utilities.loadup.model
 		{
 			failedResourced.push(event.resource);
 			checkLoadingStatus();
-
 		}
 		
 		protected function handleResourceLoaded(event:LoadupResourceEvent):void

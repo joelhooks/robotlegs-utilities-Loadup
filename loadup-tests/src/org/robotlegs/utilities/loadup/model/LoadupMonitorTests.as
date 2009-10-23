@@ -13,6 +13,7 @@ package org.robotlegs.utilities.loadup.model
 	import org.robotlegs.utilities.loadup.support.TestResourceFailsImmediatly;
 	import org.robotlegs.utilities.loadup.support.TestResourceLoadsImmediatly;
 	import org.robotlegs.utilities.loadup.support.TestResourceNeverLoads;
+	import org.robotlegs.utilities.loadup.support.TestResourceTimedLoads;
 	
 	public class LoadupMonitorTests
 	{
@@ -28,13 +29,13 @@ package org.robotlegs.utilities.loadup.model
 			this.eventDispatcher = new EventDispatcher()
 			this.loadupMonitor = new LoadupMonitor(eventDispatcher);
 		}
-		
+				
 		[Test]
 		public function loadupMonitorShouldHaveDefaultResourceList():void
 		{
 			Assert.assertNotNull("LoadupMonitor instance should have ResourceList by default", loadupMonitor.resourceList);
 		}
-		
+				
 		[Test]
 		public function testAddResource_resourceAdded():void
 		{
@@ -42,7 +43,7 @@ package org.robotlegs.utilities.loadup.model
 			this.loadupMonitor.addResource( loadupResource );
 			Assert.assertEquals("resourcesToLoad count should be 1", 1, loadupMonitor.resourcesToLoadCount);
 		}
-
+		
 		[Test]
 		public function testAddResourceArray_resourceArrayAdded():void
 		{
@@ -55,7 +56,7 @@ package org.robotlegs.utilities.loadup.model
 			loadupMonitor.startResourceLoading();
 			Assert.assertEquals("resourcesToLoad count should be 4", resourceArray.length, loadupMonitor.resourcesToLoadCount);
 		}
-
+		
 		[Test(async)]
 		public function allResourcesAreSuccessfullyLoaded():void
 		{
@@ -76,7 +77,7 @@ package org.robotlegs.utilities.loadup.model
 		{
 			Assert.assertEquals("Loaded resource count should be 4", 4, loadupMonitor.resourceList.loadedResourceCount);
 		}
-		
+				
 		[Test]
 		public function addResourceReturnsILoadupResource():void
 		{
@@ -84,7 +85,7 @@ package org.robotlegs.utilities.loadup.model
 			var loadupResource:ILoadupResource = loadupMonitor.addResource( resource );
 			Assert.assertTrue("add resource returns ILoadupResource", loadupResource is ILoadupResource);
 		}
-
+		
 		[Test(async)]
 		public function allResourcesAreLoadedButIncompleteWithOneFailure():void
 		{
@@ -134,6 +135,28 @@ package org.robotlegs.utilities.loadup.model
 		{
 			Assert.assertEquals("Loaded resource count should be 2", 2, loadupMonitor.resourceList.loadedResourceCount);
 			Assert.assertEquals("failed resource count should be 2", 2, event.data.length);
+		}
+
+		[Test(async)]
+		public function loadFinishesAsOrderedWithLongDelayFromFirstWithDefaultRetry():void
+		{
+			var resource1:IResource = new TestResourceLoadsImmediatly(eventDispatcher);
+			var resource2:IResource = new TestResourceTimedLoads(eventDispatcher, 2500);
+			
+			
+			var loadupResource1:ILoadupResource = loadupMonitor.addResource( resource1 );
+			var loadupResource2:ILoadupResource = loadupMonitor.addResource( resource2 );
+			
+			loadupResource1.required = [loadupResource2]
+			
+			Async.handleEvent(this, eventDispatcher, LoadupMonitorEvent.LOADING_COMPLETE, handleLoadFinishesAsOrderedWithLongDelayFromFirstWithDefaultRetry, 6000)
+			loadupMonitor.startResourceLoading();
+			
+		}
+		
+		protected function handleLoadFinishesAsOrderedWithLongDelayFromFirstWithDefaultRetry(event:LoadupMonitorEvent, data:Object):void
+		{
+			Assert.assertEquals("Loaded resource count should be 2", 2, loadupMonitor.resourceList.loadedResourceCount);
 		}
 	}
 }
