@@ -9,6 +9,7 @@ package org.robotlegs.utilities.loadup.model
 	import org.robotlegs.utilities.loadup.events.ResourceEvent;
 	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResourceList;
 	import org.robotlegs.utilities.loadup.interfaces.IRetryPolicy;
 	
 	/**
@@ -28,14 +29,18 @@ package org.robotlegs.utilities.loadup.model
 		protected var timeoutTimer:Timer;
 		protected var retryTimer:Timer;
 		protected var loadingIsActive:Boolean;
+		protected var resourceList:IResourceList;
 		
 		
-		public function LoadupResource(resource:IResource, eventDispatcher:IEventDispatcher)
+		public function LoadupResource(resource:IResource, resourceList:IResourceList, eventDispatcher:IEventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
 			_resource = resource;
+			_required = [];
 			_status = LoadupResourceStatus.INITIALIZED;
 			_retryPolicy = new RetryPolicy(eventDispatcher);
+			this.resourceList = resourceList;
+
 			loadingIsActive = false;
 			addListeners();
 		}
@@ -60,7 +65,27 @@ package org.robotlegs.utilities.loadup.model
 		{
 			_required = value;
 		}
-
+		
+		public function get requiredLoadupResources():Array
+		{
+			var required:Array = [];
+			
+			for each(var resource:Object in _required)
+			{
+				var loadupResource:ILoadupResource = resource as ILoadupResource;
+				if(resource is IResource)
+				{
+					loadupResource = resourceList.getLoadupResource(IResource(resource));
+					if(!loadupResource)
+						continue;
+				}
+				
+				required.push(loadupResource)
+			}            
+			
+			return required;
+		}
+		
 		public function get status():int
 		{
 			return _status;
@@ -70,15 +95,20 @@ package org.robotlegs.utilities.loadup.model
 		{
 			return _resource;
 		}
-		
+
+		public function get resourceHasFailed():Boolean
+		{
+			return _status == LoadupResourceStatus.FAILED ||    _status == LoadupResourceStatus.TIMED_OUT;        
+		}
+			
 		public function get canLoad():Boolean
 		{
- 			return status == LoadupResourceStatus.INITIALIZED && requiredResourcesLoaded;
+ 			return status == LoadupResourceStatus.INITIALIZED;
 		}
 		
 		protected function get requiredResourcesLoaded():Boolean
 		{
-			for each(var resource:ILoadupResource in _required)
+			for each(var resource:ILoadupResource in requiredLoadupResources)
 			{
 				if(resource.status != LoadupResourceStatus.LOADED)
 					return false;
@@ -86,9 +116,21 @@ package org.robotlegs.utilities.loadup.model
 			
 			return true;
 		}	
-		
+
+		protected function get hasFailedRequiredResources():Boolean
+		{
+			for each(var resource:ILoadupResource in requiredLoadupResources)
+			{
+				if(resource.resourceHasFailed)
+					return true;
+			}
+			return false;
+		}
+			
 		public function startLoad():void
 		{
+			if(hasFailedRequiredResources)
+				updateOnLoadFailed();
 			if(!requiredResourcesLoaded)
 				return;
 			

@@ -7,7 +7,7 @@ package org.robotlegs.utilities.loadup.interfaces
 		function set required(value:Array):void;
 		function get loadStartTimeMilliseconds():Number;
 		function get canLoad():Boolean;
-		
+		function get resourceHasFailed():Boolean
 		function startLoad():void;
 		
 		function get retryPolicy():IRetryPolicy;

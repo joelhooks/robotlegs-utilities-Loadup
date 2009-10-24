@@ -22,7 +22,8 @@ package org.robotlegs.utilities.loadup.model
 		[Test]
 		public function createLoadupResource_returnsLoadupResource():void
 		{
-			var loadupResourceFactory:ILoadupResourceFactory = new LoadupResourceFactory(eventDispatcher);
+			var resourceList:ResourceList = new ResourceList(eventDispatcher);
+			var loadupResourceFactory:ILoadupResourceFactory = new LoadupResourceFactory(resourceList,eventDispatcher);
 			var resource:IResource = new TestResourceNeverLoads(eventDispatcher)
 			var loadupResource:ILoadupResource = loadupResourceFactory.createLoadupResource(resource);
 			Assert.assertTrue("loadupResource should be of type LoadupResource", loadupResource is LoadupResource);

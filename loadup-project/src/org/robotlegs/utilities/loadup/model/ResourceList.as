@@ -21,7 +21,7 @@ package org.robotlegs.utilities.loadup.model
 		{
 			_resources = [];
 			this.eventDispatcher = eventDispatcher;
-			this.resourceFactory = new LoadupResourceFactory(eventDispatcher);
+			this.resourceFactory = new LoadupResourceFactory(this,eventDispatcher);
 			canAddResources = true;
 		}
 		
@@ -48,6 +48,26 @@ package org.robotlegs.utilities.loadup.model
 		{
 			return _resources.concat();
 		}
+		
+		/**
+		 * Count of resources in the list that have a current status of
+		 * <code>LoadupResourceStatus.FAILED</code> or <code>LoadupResourceStatus.TIMED_OUT</code>.
+		 * 
+		 * @return the count 
+		 * 
+		 */        
+		public function get failedResourceCount():int
+		{
+			var count:int = 0;
+			
+			for each(var resource:ILoadupResource in _resources)
+			{
+				if(resource.status == LoadupResourceStatus.FAILED || resource.status == LoadupResourceStatus.TIMED_OUT)
+					count
+			}
+			
+			return count;
+		}	
 		
 		/**
 		 * Current number of resources in the list
@@ -93,7 +113,27 @@ package org.robotlegs.utilities.loadup.model
 		{
 			return (loadedResourceCount*100)/_resources.length;
 		}
-
+		
+		public function hasLoadupResource(resource:ILoadupResource):Boolean
+		{
+			for each(var loadupResource:ILoadupResource in _resources)
+			{
+				if(loadupResource == resource)
+					return true;
+			}
+			return false;
+		}
+		
+		public function getLoadupResource(fromResource:IResource):ILoadupResource
+		{
+			for each(var resource:ILoadupResource in _resources)
+			{
+				if(resource.resource == fromResource)
+					return resource;
+			}
+			return null;
+		}
+		
 		/**
 		 * Add a single <code>IResource</code>
 		 * 

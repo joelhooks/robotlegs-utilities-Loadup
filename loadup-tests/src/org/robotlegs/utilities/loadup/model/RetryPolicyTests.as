@@ -14,13 +14,15 @@ package org.robotlegs.utilities.loadup.model
 		protected var eventDispatcher:IEventDispatcher;
 		protected var retryPolicy:IRetryPolicy;
 		protected var resourceFactory:ILoadupResourceFactory;
+		protected var resourceList:ResourceList;
 		
 		[Before]
 		public function setup():void
 		{
 			eventDispatcher = new EventDispatcher();
+			resourceList = new ResourceList(eventDispatcher)
 			retryPolicy = new RetryPolicy(eventDispatcher);
-			resourceFactory = new LoadupResourceFactory(eventDispatcher);
+			resourceFactory = new LoadupResourceFactory(resourceList, eventDispatcher);
 		}
 		
 		[Test]

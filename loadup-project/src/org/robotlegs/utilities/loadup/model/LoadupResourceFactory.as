@@ -5,16 +5,19 @@ package org.robotlegs.utilities.loadup.model
 	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
 	import org.robotlegs.utilities.loadup.interfaces.ILoadupResourceFactory;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.interfaces.IResourceList;
 	import org.robotlegs.utilities.loadup.interfaces.IRetryPolicy;
 
 	public class LoadupResourceFactory implements ILoadupResourceFactory
 	{
 		protected var eventDispatcher:IEventDispatcher;
 		protected var _defaultRetryPolicy:IRetryPolicy;
+		protected var resourceList:IResourceList;
 		
-		public function LoadupResourceFactory(eventDispatcher:IEventDispatcher)
+		public function LoadupResourceFactory(resourceList:IResourceList, eventDispatcher:IEventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
+			this.resourceList = resourceList;
 			_defaultRetryPolicy = new RetryPolicy(eventDispatcher);
 		}
 
@@ -30,7 +33,7 @@ package org.robotlegs.utilities.loadup.model
 		
 		public function createLoadupResource(fromResource:IResource):ILoadupResource
 		{
-			var loadupResource:ILoadupResource = new LoadupResource(fromResource, eventDispatcher);
+			var loadupResource:ILoadupResource = new LoadupResource(fromResource, resourceList, eventDispatcher);
 			loadupResource.retryPolicy = _defaultRetryPolicy.copy();
 			return loadupResource;
 		}

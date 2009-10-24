@@ -154,12 +154,16 @@ package org.robotlegs.utilities.loadup.model
 		
 		protected function handleResourceFailed(event:LoadupResourceEvent):void
 		{
+			if(!_resourceList.hasLoadupResource( event.resource ))
+				return;
 			failedResourced.push(event.resource);
 			checkLoadingStatus();
 		}
 		
 		protected function handleResourceLoaded(event:LoadupResourceEvent):void
 		{
+			if(!_resourceList.hasLoadupResource( event.resource ))
+				return;
 			loadedResources.push( event.resource );
 			checkLoadingStatus();
 			eventDispatcher.dispatchEvent(new LoadupMonitorEvent(LoadupMonitorEvent.LOADING_PROGRESS, this, event.resource, _resourceList.percentLoaded));

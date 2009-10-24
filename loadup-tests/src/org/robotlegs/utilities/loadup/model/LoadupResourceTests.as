@@ -22,12 +22,14 @@ package org.robotlegs.utilities.loadup.model
 		private var loadupResource:LoadupResource;
 		private var eventDispatcher:IEventDispatcher;
 		private var resourceFactory:ILoadupResourceFactory;
+		private var resourceList:ResourceList;
 		
 		[Before]
 		public function setup():void
 		{
 			this.eventDispatcher = new EventDispatcher();
-			resourceFactory = new LoadupResourceFactory(eventDispatcher);
+			resourceList = new ResourceList(eventDispatcher);
+			resourceFactory = new LoadupResourceFactory(resourceList, eventDispatcher);
 		}
 		
 		[After]
@@ -36,12 +38,12 @@ package org.robotlegs.utilities.loadup.model
 			eventDispatcher = null;
 			loadupResource = null;
 		}
-
+		
 		[Test(async)]
 		public function load_loadsImmediatly_dispatchesLoadedEvent():void
 		{
 			var resource:IResource = new TestResourceLoadsImmediatly(eventDispatcher);
-			loadupResource = new LoadupResource(resource, eventDispatcher);
+			loadupResource = new LoadupResource(resource, resourceList, eventDispatcher);
 			Async.handleEvent(this, eventDispatcher, ResourceEvent.RESOURCE_LOADED, handleResourceImmediatlyLoaded);
 			
 			resource.load();
@@ -52,12 +54,12 @@ package org.robotlegs.utilities.loadup.model
 			Assert.assertEquals("event type should be RESOURCE_LOADED", ResourceEvent.RESOURCE_LOADED, event.type);
 			Assert.assertEquals("status should be loaded", LoadupResourceStatus.LOADED, loadupResource.status);
 		}
-
+		
 		[Test(async)]
 		public function load_loadFailsImmediatly_dispatchesLoadFailedEvent():void
 		{
 			var resource:IResource = new TestResourceFailsImmediatly(eventDispatcher);
-			loadupResource = new LoadupResource(resource, eventDispatcher);
+			loadupResource = new LoadupResource(resource, resourceList, eventDispatcher);
 			Async.handleEvent(this, eventDispatcher, ResourceEvent.RESOURCE_LOAD_FAILED, handleResourceFailedImmediatly);
 			
 			resource.load();			
@@ -68,7 +70,7 @@ package org.robotlegs.utilities.loadup.model
 			Assert.assertEquals("event type should be RESOURCE_LOAD_FAILED", ResourceEvent.RESOURCE_LOAD_FAILED, event.type);
 			Assert.assertEquals("status should be failed", LoadupResourceStatus.FAILED, loadupResource.status);			
 		}
-
+		
 		[Test]
 		public function requiredResourceNotLoadedPreventsLoading():void
 		{
@@ -84,7 +86,7 @@ package org.robotlegs.utilities.loadup.model
 		}
 
 		[Test]
-		public function resourceNotLoadedAfterRequiredFails():void
+		public function resourceFailsAfterRequiredFails():void
 		{
 			var resource1:ILoadupResource = resourceFactory.createLoadupResource(new TestResourceLoadsImmediatly(eventDispatcher));
 			var resource2:ILoadupResource = resourceFactory.createLoadupResource(new TestResourceFailsImmediatly(eventDispatcher));
@@ -94,9 +96,9 @@ package org.robotlegs.utilities.loadup.model
 			resource2.startLoad();
 			resource1.startLoad();
 			
-			Assert.assertEquals("resource 1 should not be loaded", LoadupResourceStatus.INITIALIZED, resource1.status);
+			Assert.assertEquals("resource 1 should not be loaded", LoadupResourceStatus.FAILED, resource1.status);
 		}
-
+		
 		[Test]
 		public function requiredResourceLoadsAfterRequiredIsLoaded():void
 		{
@@ -201,7 +203,7 @@ package org.robotlegs.utilities.loadup.model
 		{
 			Assert.assertEquals("resource status should be TIMED_OUT", LoadupResourceStatus.TIMED_OUT, data.status);
 		}
-
+		
 		[Test(async)]
 		public function resourceTimesOutAccordingToPolicy_2000ms_4Retries_500msInterval():void
 		{
@@ -217,6 +219,26 @@ package org.robotlegs.utilities.loadup.model
 		protected function handleTimeOutAccordingToPolicy500ms4Retries500msInterval(event:LoadupResourceEvent, data:ILoadupResource):void
 		{
 			Assert.assertEquals("resource status should be TIMED_OUT", LoadupResourceStatus.TIMED_OUT, data.status);
+		}
+		
+		[Test]
+		public function requiredResourceCanBeOfTypeIResource():void
+		{
+			var resource:IResource = new TestResourceLoadsImmediatly(eventDispatcher)
+			
+			var loadupResource1:ILoadupResource = resourceList.addResource(new TestResourceLoadsImmediatly(eventDispatcher));
+			var loadupResource2:ILoadupResource = resourceList.addResource(resource);
+			
+			loadupResource1.required = [resource];
+			
+			loadupResource1.startLoad();
+			
+			Assert.assertEquals("resource 1 should not be loaded", LoadupResourceStatus.INITIALIZED, loadupResource1.status);            
+			
+			loadupResource2.startLoad();
+			loadupResource1.startLoad();
+			
+			Assert.assertEquals("resource 1 should be loaded", LoadupResourceStatus.LOADED, loadupResource1.status);
 		}
 	}
 }
