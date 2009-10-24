@@ -4,6 +4,7 @@ package org.robotlegs.utilities.loadup.support
 	
 	import org.robotlegs.utilities.loadup.events.ResourceEvent;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.model.ResourceEventTypes;
 	
 	public class TestResourceLoadsImmediatly implements IResource
 	{
@@ -18,6 +19,10 @@ package org.robotlegs.utilities.loadup.support
 		{
 			eventDispatcher.dispatchEvent(new ResourceEvent(ResourceEvent.RESOURCE_LOADED, this));
 		}
-
+		
+		public function getResourceEventTypes(value:ResourceEventTypes):ResourceEventTypes
+		{
+			return value;
+		}
 	}
 }

@@ -7,6 +7,7 @@ package org.robotlegs.utilities.loadup.support
 	
 	import org.robotlegs.utilities.loadup.events.ResourceEvent;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.model.ResourceEventTypes;
 	
 	public class TestResourceTimedLoads implements IResource
 	{
@@ -25,6 +26,10 @@ package org.robotlegs.utilities.loadup.support
 			this.timer.start();
 		}
 		
+		public function getResourceEventTypes(value:ResourceEventTypes):ResourceEventTypes
+		{
+			return value;
+		}
 		
 		protected function handleTimer(event:Event):void
 		{

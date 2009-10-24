@@ -7,6 +7,7 @@ package org.robotlegs.utilities.loadup.support
 	
 	import org.robotlegs.utilities.loadup.events.ResourceEvent;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.model.ResourceEventTypes;
 	
 	public class TestResourceTimedFails implements IResource
 	{
@@ -34,6 +35,11 @@ package org.robotlegs.utilities.loadup.support
 			timer.stop();
 			timer.reset();
 			eventDispatcher.dispatchEvent(new ResourceEvent(ResourceEvent.RESOURCE_LOAD_FAILED, this));
+		}
+		
+		public function getResourceEventTypes(value:ResourceEventTypes):ResourceEventTypes
+		{
+			return value;
 		}
 	}
 }

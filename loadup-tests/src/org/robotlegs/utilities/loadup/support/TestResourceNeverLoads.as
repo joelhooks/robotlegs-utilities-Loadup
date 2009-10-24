@@ -2,8 +2,8 @@ package org.robotlegs.utilities.loadup.support
 {
 	import flash.events.IEventDispatcher;
 	
-	import org.robotlegs.utilities.loadup.events.ResourceEvent;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.model.ResourceEventTypes;
 	
 	public class TestResourceNeverLoads implements IResource
 	{
@@ -17,6 +17,11 @@ package org.robotlegs.utilities.loadup.support
 		public function load():void
 		{
 			//this resource just won't load!
+		}
+		
+		public function getResourceEventTypes(value:ResourceEventTypes):ResourceEventTypes
+		{
+			return value;
 		}
 	}
 }

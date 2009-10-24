@@ -1,11 +1,10 @@
 package org.robotlegs.utilities.loadup.support
 {
-	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-	import flash.utils.Timer;
 	
 	import org.robotlegs.utilities.loadup.events.ResourceEvent;
 	import org.robotlegs.utilities.loadup.interfaces.IResource;
+	import org.robotlegs.utilities.loadup.model.ResourceEventTypes;
 	
 	public class TestResourceLoadsOnAttempts implements IResource
 	{
@@ -28,6 +27,10 @@ package org.robotlegs.utilities.loadup.support
 			else
 				eventDispatcher.dispatchEvent(new ResourceEvent(ResourceEvent.RESOURCE_LOADED, this));
 		}
-
+		
+		public function getResourceEventTypes(value:ResourceEventTypes):ResourceEventTypes
+		{
+			return value;
+		}
 	}
 }
