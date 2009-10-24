@@ -24,6 +24,7 @@
     <classEntry path="org.robotlegs.utilities.loadup.events.ResourceEvent"/>
     <classEntry path="org.robotlegs.utilities.loadup.model.LoadupResourceStatus"/>
     <classEntry path="org.robotlegs.utilities.loadup.model.RetryParameters"/>
+    <classEntry path="org.robotlegs.utilities.loadup.model.ResourceEventNames"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

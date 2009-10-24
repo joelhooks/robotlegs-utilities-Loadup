@@ -25,6 +25,7 @@ package org.robotlegs.utilities.loadup.support
 			this.timer.start();
 		}
 		
+		
 		protected function handleTimer(event:Event):void
 		{
 			timer.stop();

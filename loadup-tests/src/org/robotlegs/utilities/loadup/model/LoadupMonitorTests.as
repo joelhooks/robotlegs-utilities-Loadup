@@ -158,5 +158,26 @@ package org.robotlegs.utilities.loadup.model
 		{
 			Assert.assertEquals("Loaded resource count should be 2", 2, loadupMonitor.resourceList.loadedResourceCount);
 		}
+
+		[Test(async)]
+		public function chained_Requires_With_Failure_Dispatches_Loading_Finished_Incomplete():void
+		{
+			var loadupResource1:ILoadupResource = loadupMonitor.addResource(new TestResourceLoadsImmediatly(eventDispatcher));
+			var loadupResource2:ILoadupResource = loadupMonitor.addResource(new TestResourceLoadsImmediatly(eventDispatcher));
+			var loadupResource3:ILoadupResource = loadupMonitor.addResource(new TestResourceLoadsImmediatly(eventDispatcher));
+			var loadupResource4:ILoadupResource = loadupMonitor.addResource(new TestResourceFailsImmediatly(eventDispatcher));
+			
+			loadupResource1.required = [loadupResource2, loadupResource4];
+			loadupResource3.required = [loadupResource1]
+				
+			Async.handleEvent(this, eventDispatcher, LoadupMonitorEvent.LOADING_FINISHED_INCOMPLETE, handleChainedRequiresWithFailureDispatchesLoadingFinishedIncomplete, 1000)
+			loadupMonitor.startResourceLoading();
+		}
+		
+		protected function handleChainedRequiresWithFailureDispatchesLoadingFinishedIncomplete(event:LoadupMonitorEvent, data:Object):void
+		{
+			Assert.assertEquals("Loaded resource count should be 1", 1, loadupMonitor.resourceList.loadedResourceCount);
+			Assert.assertEquals("failed resource count should be 3", 3, event.data.length);
+		}
 	}
 }

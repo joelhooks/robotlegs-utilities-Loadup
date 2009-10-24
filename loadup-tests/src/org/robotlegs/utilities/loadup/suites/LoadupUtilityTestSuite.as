@@ -10,10 +10,10 @@ package org.robotlegs.utilities.loadup.suites
 	[RunWith("org.flexunit.runners.Suite")]
 	public class LoadupUtilityTestSuite
 	{
-		//public var loadupMonitorTest:LoadupMonitorTests;
-		//public var loadupResourceFactoryTests:LoadupResourceFactoryTests;
+		public var loadupMonitorTest:LoadupMonitorTests;
+		public var loadupResourceFactoryTests:LoadupResourceFactoryTests;
 		public var loadupResourceTests:LoadupResourceTests;
-		//public var resourceListTests:ResourceListTests;
-		//public var retryPolicyTests:RetryPolicyTests;
+		public var resourceListTests:ResourceListTests;
+		public var retryPolicyTests:RetryPolicyTests;
 	}
 }

@@ -28,5 +28,6 @@ package org.robotlegs.utilities.loadup.support
 			else
 				eventDispatcher.dispatchEvent(new ResourceEvent(ResourceEvent.RESOURCE_LOADED, this));
 		}
+
 	}
 }
