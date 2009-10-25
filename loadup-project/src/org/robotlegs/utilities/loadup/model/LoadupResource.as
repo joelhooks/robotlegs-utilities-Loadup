@@ -152,7 +152,6 @@ package org.robotlegs.utilities.loadup.model
 
 		public function destroy():void
 		{
-			trace("destroying resource");
 			removeListeners();
 			_resource = null;
 			_required.length = 0;

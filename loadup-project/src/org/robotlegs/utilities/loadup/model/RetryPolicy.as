@@ -99,7 +99,7 @@ package org.robotlegs.utilities.loadup.model
 
 		public function destroy():void
 		{
-			trace("destroying retry policy");
+			_retryParameters = null;
 		}
 		
 		protected function getNextRetryInterval() :Number {

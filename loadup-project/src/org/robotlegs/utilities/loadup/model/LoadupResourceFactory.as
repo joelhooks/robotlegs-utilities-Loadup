@@ -41,7 +41,8 @@ package org.robotlegs.utilities.loadup.model
 		
 		public function destroy():void
 		{
-			trace("destroying factory");
+			resourceList = null;
+			_defaultRetryPolicy = null;
 		}
 	}
 }
