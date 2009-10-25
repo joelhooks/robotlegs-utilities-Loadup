@@ -43,7 +43,8 @@ package org.robotlegs.utilities.loadup.model
 		public function load_loadsImmediatly_dispatchesLoadedEvent():void
 		{
 			var resource:IResource = new TestResourceLoadsImmediatly(eventDispatcher);
-			loadupResource = new LoadupResource(resource, resourceList, eventDispatcher);
+			var resourceEventTypes:ResourceEventTypes = new ResourceEventTypes();
+			loadupResource = new LoadupResource(resource, resourceList, resourceEventTypes, eventDispatcher);
 			Async.handleEvent(this, eventDispatcher, ResourceEvent.RESOURCE_LOADED, handleResourceImmediatlyLoaded);
 			
 			resource.load();
@@ -59,7 +60,8 @@ package org.robotlegs.utilities.loadup.model
 		public function load_loadFailsImmediatly_dispatchesLoadFailedEvent():void
 		{
 			var resource:IResource = new TestResourceFailsImmediatly(eventDispatcher);
-			loadupResource = new LoadupResource(resource, resourceList, eventDispatcher);
+			var resourceEventTypes:ResourceEventTypes = new ResourceEventTypes();
+			loadupResource = new LoadupResource(resource, resourceList, resourceEventTypes, eventDispatcher);
 			Async.handleEvent(this, eventDispatcher, ResourceEvent.RESOURCE_LOAD_FAILED, handleResourceFailedImmediatly);
 			
 			resource.load();			

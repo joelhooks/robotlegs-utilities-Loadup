@@ -7,7 +7,7 @@ package org.robotlegs.utilities.loadup.events
 	public class ResourceEvent extends Event
 	{
 		public static const RESOURCE_LOADED:String = "resourceLoaded";
-		public static const RESOURCE_LOADING:String = "resourceLoading";
+		public static const RESOURCE_LOADING_STARTED:String = "resourceLoadingStarted";
 		public static const RESOURCE_LOAD_FAILED:String = "resourceLoadFailed";
 		
 		public var resource:IResource;

@@ -33,7 +33,8 @@ package org.robotlegs.utilities.loadup.model
 		
 		public function createLoadupResource(fromResource:IResource):ILoadupResource
 		{
-			var loadupResource:ILoadupResource = new LoadupResource(fromResource, resourceList, eventDispatcher);
+			var resourceEventTypes:ResourceEventTypes = fromResource.getResourceEventTypes( new ResourceEventTypes() )
+			var loadupResource:ILoadupResource = new LoadupResource(fromResource, resourceList, resourceEventTypes, eventDispatcher);
 			loadupResource.retryPolicy = _defaultRetryPolicy.copy();
 			return loadupResource;
 		}

@@ -19,6 +19,9 @@ package org.robotlegs.utilities.loadup.model
 		
 		protected var loadedResources:Array;
 		protected var failedResourced:Array;
+		
+		protected var loadHasFailed:Boolean;
+		protected var loadHasFinished:Boolean;
 		/**
 		 * Constructor
 		 * 
@@ -33,6 +36,8 @@ package org.robotlegs.utilities.loadup.model
 			defaultRetryPolicy = new RetryPolicy(eventDispatcher);
 			loadedResources = [];
 			failedResourced = [];
+			loadHasFailed = false;
+			loadHasFinished = false;
 			addEventListeners();
 		}
 		
@@ -106,6 +111,7 @@ package org.robotlegs.utilities.loadup.model
 
 		public function get loadingIsFinished():Boolean 
 		{
+
 			
 			for each(var resource:ILoadupResource in _resourceList.resources)
 			{
@@ -129,15 +135,40 @@ package org.robotlegs.utilities.loadup.model
 			}			
 		}
 		
-		protected function checkLoadingStatus():void
+		protected function checkLoadingHasCompleted():void
 		{
 			if(allResourcesAreLoaded)
+			{
 				eventDispatcher.dispatchEvent( new LoadupMonitorEvent( LoadupMonitorEvent.LOADING_COMPLETE, this ) );
+				loadHasFinished = true;
+				destroy();
+			}
 			else
+			{
 				loadAllResources();
-
-			if(loadingIsFinished && !allResourcesAreLoaded)
+			}
+		}
+		
+		protected function checkLoadingHasFailed():void
+		{
+			if(!loadHasFinished && !loadHasFailed && loadingIsFinished && !allResourcesAreLoaded)
+			{
 				eventDispatcher.dispatchEvent( new LoadupMonitorEvent(LoadupMonitorEvent.LOADING_FINISHED_INCOMPLETE, this, null, failedResourced) );
+				loadHasFailed = true;
+				destroy();
+			}		
+		}
+		
+		public function destroy():void
+		{
+			removeEventListeners();
+			eventDispatcher = null;
+			
+			_resourceList = null;
+			_defaultRetryPolicy = null;
+			
+			loadedResources.length = 0
+			failedResourced.length = 0;
 		}
 
 		protected function addEventListeners():void
@@ -150,6 +181,8 @@ package org.robotlegs.utilities.loadup.model
 		protected function removeEventListeners():void
 		{
 			eventDispatcher.removeEventListener( LoadupResourceEvent.LOADUP_RESOURCE_LOADED, handleResourceLoaded );
+			eventDispatcher.removeEventListener( LoadupResourceEvent.LOADUP_RESOURCE_FAILED, handleResourceFailed );
+			eventDispatcher.removeEventListener( LoadupResourceEvent.LOADUP_RESOURCE_TIMED_OUT, handleResourceFailed );
 		}
 		
 		protected function handleResourceFailed(event:LoadupResourceEvent):void
@@ -157,7 +190,8 @@ package org.robotlegs.utilities.loadup.model
 			if(!_resourceList.hasLoadupResource( event.resource ))
 				return;
 			failedResourced.push(event.resource);
-			checkLoadingStatus();
+			checkLoadingHasCompleted();
+			checkLoadingHasFailed();
 		}
 		
 		protected function handleResourceLoaded(event:LoadupResourceEvent):void
@@ -165,9 +199,9 @@ package org.robotlegs.utilities.loadup.model
 			if(!_resourceList.hasLoadupResource( event.resource ))
 				return;
 			loadedResources.push( event.resource );
-			checkLoadingStatus();
 			eventDispatcher.dispatchEvent(new LoadupMonitorEvent(LoadupMonitorEvent.LOADING_PROGRESS, this, event.resource, _resourceList.percentLoaded));
+			checkLoadingHasCompleted();
+			checkLoadingHasFailed();
 		}
-		
 	}
 }

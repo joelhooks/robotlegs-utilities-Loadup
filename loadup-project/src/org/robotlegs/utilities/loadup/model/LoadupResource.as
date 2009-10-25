@@ -30,11 +30,13 @@ package org.robotlegs.utilities.loadup.model
 		protected var retryTimer:Timer;
 		protected var loadingIsActive:Boolean;
 		protected var resourceList:IResourceList;
+		protected var resourceEventTypes:ResourceEventTypes;
 		
 		
-		public function LoadupResource(resource:IResource, resourceList:IResourceList, eventDispatcher:IEventDispatcher)
+		public function LoadupResource(resource:IResource, resourceList:IResourceList, resourceEventTypes:ResourceEventTypes, eventDispatcher:IEventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
+			this.resourceEventTypes = resourceEventTypes;
 			_resource = resource;
 			_required = [];
 			_status = LoadupResourceStatus.INITIALIZED;
@@ -137,6 +139,7 @@ package org.robotlegs.utilities.loadup.model
 			var now:Date = new Date()
 			_loadStartTimeMilliseconds = now.time;
 			_status = LoadupResourceStatus.LOADING;
+			eventDispatcher.dispatchEvent(new ResourceEvent( resourceEventTypes.loading, this.resource ));
 			resource.load();
 			if(retryPolicy.retryParameters.timeoutInSeconds > 0)
 				startTimeoutTimer();
@@ -176,6 +179,7 @@ package org.robotlegs.utilities.loadup.model
 			else
 			{
 				_status = LoadupResourceStatus.FAILED;
+				eventDispatcher.dispatchEvent(new ResourceEvent( resourceEventTypes.loadingFailed, this.resource ));
 				eventDispatcher.dispatchEvent(new LoadupResourceEvent(LoadupResourceEvent.LOADUP_RESOURCE_FAILED, this));
 				removeListeners();					
 			}
@@ -205,6 +209,7 @@ package org.robotlegs.utilities.loadup.model
 			if(_status != LoadupResourceStatus.FAILED && _status != LoadupResourceStatus.LOADED)
 			{
 				_status = LoadupResourceStatus.TIMED_OUT;
+				eventDispatcher.dispatchEvent(new ResourceEvent( resourceEventTypes.loadingTimedOut, this.resource ));
 				eventDispatcher.dispatchEvent(new LoadupResourceEvent(LoadupResourceEvent.LOADUP_RESOURCE_TIMED_OUT, this));			
 			}
 		}
@@ -239,6 +244,7 @@ package org.robotlegs.utilities.loadup.model
 				if(_status != LoadupResourceStatus.FAILED && _status != LoadupResourceStatus.TIMED_OUT)
 				{
 					_status = LoadupResourceStatus.LOADED;
+					eventDispatcher.dispatchEvent(new ResourceEvent( resourceEventTypes.loaded, this.resource ));
 					eventDispatcher.dispatchEvent(new LoadupResourceEvent(LoadupResourceEvent.LOADUP_RESOURCE_LOADED, this));
 					removeListeners();					
 				}
