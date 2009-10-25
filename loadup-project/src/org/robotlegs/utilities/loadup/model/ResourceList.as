@@ -153,5 +153,19 @@ package org.robotlegs.utilities.loadup.model
 		{
 			canAddResources = false;
 		}
+		
+		public function destroy():void
+		{
+			for each(var resource:ILoadupResource in _resources)
+			{
+				resource.destroy();
+			}
+			
+			_resources.length = 0;
+			_resourceFactory.destroy();
+			_resourceFactory = null;
+			_defaultRetryPolicy = null;
+			eventDispatcher = null;
+		}
 	}
 }

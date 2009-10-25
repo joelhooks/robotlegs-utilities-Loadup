@@ -9,6 +9,7 @@ package org.robotlegs.utilities.loadup.interfaces
 		function get canLoad():Boolean;
 		function get resourceHasFailed():Boolean
 		function startLoad():void;
+		function destroy():void; 
 		
 		function get retryPolicy():IRetryPolicy;
 		function set retryPolicy(value:IRetryPolicy):void;

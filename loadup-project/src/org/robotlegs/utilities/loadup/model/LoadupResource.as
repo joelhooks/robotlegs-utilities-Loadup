@@ -31,6 +31,7 @@ package org.robotlegs.utilities.loadup.model
 		protected var loadingIsActive:Boolean;
 		protected var resourceList:IResourceList;
 		protected var resourceEventTypes:ResourceEventTypes;
+		protected var destroyed:Boolean;
 		
 		
 		public function LoadupResource(resource:IResource, resourceList:IResourceList, resourceEventTypes:ResourceEventTypes, eventDispatcher:IEventDispatcher)
@@ -42,7 +43,7 @@ package org.robotlegs.utilities.loadup.model
 			_status = LoadupResourceStatus.INITIALIZED;
 			_retryPolicy = new RetryPolicy(eventDispatcher);
 			this.resourceList = resourceList;
-
+			destroyed = false;
 			loadingIsActive = false;
 			addListeners();
 		}
@@ -132,8 +133,12 @@ package org.robotlegs.utilities.loadup.model
 		public function startLoad():void
 		{
 			if(hasFailedRequiredResources)
+			{
 				updateOnLoadFailed();
-			if(!requiredResourcesLoaded)
+				return;
+			}
+			
+			if(destroyed || !requiredResourcesLoaded)
 				return;
 			
 			var now:Date = new Date()
@@ -141,8 +146,25 @@ package org.robotlegs.utilities.loadup.model
 			_status = LoadupResourceStatus.LOADING;
 			eventDispatcher.dispatchEvent(new ResourceEvent( resourceEventTypes.loading, this.resource ));
 			resource.load();
-			if(retryPolicy.retryParameters.timeoutInSeconds > 0)
+			if(retryPolicy && retryPolicy.retryParameters.timeoutInSeconds > 0)
 				startTimeoutTimer();
+		}
+
+		public function destroy():void
+		{
+			trace("destroying resource");
+			removeListeners();
+			_resource = null;
+			_required.length = 0;
+			_retryPolicy.destroy();
+			_retryPolicy = null;
+
+			eventDispatcher = null;
+			timeoutTimer = null;
+			retryTimer = null;
+			resourceList = null;
+			resourceEventTypes = null;
+			destroyed = true;
 		}
 		
 		protected function startReload():void
@@ -181,7 +203,6 @@ package org.robotlegs.utilities.loadup.model
 				_status = LoadupResourceStatus.FAILED;
 				eventDispatcher.dispatchEvent(new ResourceEvent( resourceEventTypes.loadingFailed, this.resource ));
 				eventDispatcher.dispatchEvent(new LoadupResourceEvent(LoadupResourceEvent.LOADUP_RESOURCE_FAILED, this));
-				removeListeners();					
 			}
 		}
 		
@@ -246,7 +267,6 @@ package org.robotlegs.utilities.loadup.model
 					_status = LoadupResourceStatus.LOADED;
 					eventDispatcher.dispatchEvent(new ResourceEvent( resourceEventTypes.loaded, this.resource ));
 					eventDispatcher.dispatchEvent(new LoadupResourceEvent(LoadupResourceEvent.LOADUP_RESOURCE_LOADED, this));
-					removeListeners();					
 				}
 			}
 		}

@@ -11,6 +11,7 @@ package org.robotlegs.utilities.loadup.interfaces
 		function get canAttemptReload():Boolean
 		function getTimeoutTimer() :Timer;
 		function getRetryTimer() :Timer;
+		function destroy():void; 
 		
 		function get retryParameters():IRetryParameters;
 		function set retryParameters(value:IRetryParameters):void;

@@ -6,5 +6,6 @@ package org.robotlegs.utilities.loadup.interfaces
 
 		function get defaultRetryPolicy():IRetryPolicy;
 		function set defaultRetryPolicy(value:IRetryPolicy):void;
+		function destroy():void; 
 	}
 }

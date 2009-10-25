@@ -19,6 +19,7 @@ package org.robotlegs.utilities.loadup.interfaces
 		function getLoadupResource(fromResource:IResource):ILoadupResource;
 		function addResource(resource:IResource):ILoadupResource;
 		function closeResourceList():void;
+		function destroy():void; 
 			
 	}
 }

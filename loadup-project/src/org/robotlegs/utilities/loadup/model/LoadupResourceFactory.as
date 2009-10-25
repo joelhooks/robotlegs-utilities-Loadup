@@ -38,5 +38,10 @@ package org.robotlegs.utilities.loadup.model
 			loadupResource.retryPolicy = _defaultRetryPolicy.copy();
 			return loadupResource;
 		}
+		
+		public function destroy():void
+		{
+			trace("destroying factory");
+		}
 	}
 }

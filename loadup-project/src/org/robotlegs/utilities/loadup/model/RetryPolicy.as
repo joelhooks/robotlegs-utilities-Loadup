@@ -97,6 +97,11 @@ package org.robotlegs.utilities.loadup.model
 			return null;
 		}
 
+		public function destroy():void
+		{
+			trace("destroying retry policy");
+		}
+		
 		protected function getNextRetryInterval() :Number {
 			if ( lastRetryInterval == 0 )
 				return ( lastRetryInterval = retryParameters.retryInterval );

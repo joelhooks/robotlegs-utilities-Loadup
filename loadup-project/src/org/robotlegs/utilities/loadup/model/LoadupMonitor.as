@@ -128,6 +128,9 @@ package org.robotlegs.utilities.loadup.model
 		
 		protected function loadAllResources():void
 		{
+			if(loadHasFinished)
+				return;
+			
 			for each(var resource:ILoadupResource in resourceList.resources)
 			{
 				if(resource.canLoad)
@@ -137,13 +140,16 @@ package org.robotlegs.utilities.loadup.model
 		
 		protected function checkLoadingHasCompleted():void
 		{
+			if(loadHasFinished)
+				return;
+			
 			if(allResourcesAreLoaded)
 			{
 				eventDispatcher.dispatchEvent( new LoadupMonitorEvent( LoadupMonitorEvent.LOADING_COMPLETE, this ) );
 				loadHasFinished = true;
 				destroy();
 			}
-			else
+			else if(!loadHasFinished)
 			{
 				loadAllResources();
 			}
@@ -163,7 +169,7 @@ package org.robotlegs.utilities.loadup.model
 		{
 			removeEventListeners();
 			eventDispatcher = null;
-			
+			_resourceList.destroy();
 			_resourceList = null;
 			_defaultRetryPolicy = null;
 			
