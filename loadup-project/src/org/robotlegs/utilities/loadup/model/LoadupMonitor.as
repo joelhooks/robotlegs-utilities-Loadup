@@ -111,8 +111,6 @@ package org.robotlegs.utilities.loadup.model
 
 		public function get loadingIsFinished():Boolean 
 		{
-
-			
 			for each(var resource:ILoadupResource in _resourceList.resources)
 			{
 				var finishedLoading:Boolean = resource.status == LoadupResourceStatus.FAILED;
@@ -122,7 +120,6 @@ package org.robotlegs.utilities.loadup.model
 				if(!finishedLoading)
 					return false;
 			}
-			
 			return true;
 		}
 		
@@ -149,7 +146,7 @@ package org.robotlegs.utilities.loadup.model
 				loadHasFinished = true;
 				destroy();
 			}
-			else if(!loadHasFinished)
+			else
 			{
 				loadAllResources();
 			}

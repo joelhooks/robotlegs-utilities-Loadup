@@ -1,6 +1,9 @@
 package org.robotlegs.utilities.loadup.model
 {
 	import flash.events.IEventDispatcher;
+	import flash.net.getClassByAlias;
+	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;
 	
 	import org.robotlegs.utilities.loadup.interfaces.ILoadupResource;
 	import org.robotlegs.utilities.loadup.interfaces.ILoadupResourceFactory;
