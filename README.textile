@@ -1,3 +1,5 @@
+If it were my code, I would use "AssetLoader":http://github.com/Matan/AssetLoader instead of this library.
+
 Not much in the way of docs yet, but:
 
 h3. At the simplest:
